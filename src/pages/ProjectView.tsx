@@ -151,7 +151,7 @@ const ProjectView = () => {
               </Card>
             </div>
 
-            {/* Centre: Envelope Timeline */}
+            {/* Right: Ownership Timeline */}
             <div className="col-span-6">
               <Card>
                 <CardHeader className="pb-3">
