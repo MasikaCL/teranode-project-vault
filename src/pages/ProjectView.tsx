@@ -85,7 +85,7 @@ const ProjectView = () => {
     <div className="flex min-h-screen bg-background">
       <DashboardSidebar />
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
         <header className="border-b bg-card px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
@@ -199,14 +199,14 @@ const ProjectView = () => {
             </Card>
           )}
 
-          {/* TOP ROW: Parties + Ownership side-by-side */}
-          <div className="grid grid-cols-2 gap-5 mb-5">
+          {/* TOP ROW: Parties (compact) + Activity (wider) */}
+          <div className="grid grid-cols-12 gap-5 mb-5">
             {/* Parties */}
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="col-span-4">
+              <CardHeader className="pb-2 px-4 pt-4">
                 <CardTitle className="text-sm font-semibold">Parties Involved</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2 px-4 pb-4">
                 {project.parties.map((party) => (
                   <div key={party.name} className="flex items-start gap-2">
                     <div className={cn(
@@ -235,7 +235,7 @@ const ProjectView = () => {
             </Card>
 
             {/* Ownership Timeline + Activity Feed */}
-            <Card>
+            <Card className="col-span-8">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-semibold flex items-center gap-2">
                   <Activity className="h-4 w-4 text-primary" />
