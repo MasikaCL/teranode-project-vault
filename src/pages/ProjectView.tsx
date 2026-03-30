@@ -199,14 +199,14 @@ const ProjectView = () => {
             </Card>
           )}
 
-          {/* TOP ROW: Parties + Ownership side-by-side */}
-          <div className="grid grid-cols-2 gap-5 mb-5">
+          {/* TOP ROW: Parties (compact) + Activity (wider) */}
+          <div className="grid grid-cols-12 gap-5 mb-5">
             {/* Parties */}
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="col-span-4">
+              <CardHeader className="pb-2 px-4 pt-4">
                 <CardTitle className="text-sm font-semibold">Parties Involved</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2 px-4 pb-4">
                 {project.parties.map((party) => (
                   <div key={party.name} className="flex items-start gap-2">
                     <div className={cn(
