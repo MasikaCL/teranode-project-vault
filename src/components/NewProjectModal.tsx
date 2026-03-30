@@ -6,13 +6,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 
 interface NewProjectModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
+const defaultParties = [
+  { name: "", role: "developer" },
+  { name: "", role: "contractor" },
+  { name: "", role: "subcontractor" },
+];
+
 const NewProjectModal = ({ open, onOpenChange }: NewProjectModalProps) => {
+  const [parties, setParties] = useState(defaultParties);
+
+  const addParty = () => {
+    setParties([...parties, { name: "", role: "" }]);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
@@ -48,23 +61,34 @@ const NewProjectModal = ({ open, onOpenChange }: NewProjectModalProps) => {
           </div>
           <div className="space-y-2">
             <Label>Parties</Label>
+            <p className="text-xs text-muted-foreground">Add all parties involved in this project. At minimum, include the developer, main contractor, and one subcontractor.</p>
             <div className="space-y-2">
-              <div className="flex gap-2">
-                <Input placeholder="Party name" className="flex-1" />
-                <Select>
-                  <SelectTrigger className="w-40">
-                    <SelectValue placeholder="Role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="developer">Developer</SelectItem>
-                    <SelectItem value="contractor">Main Contractor</SelectItem>
-                    <SelectItem value="subcontractor">Subcontractor</SelectItem>
-                    <SelectItem value="consultant">Consultant</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              {parties.map((party, i) => (
+                <div key={i} className="flex gap-2">
+                  <Input
+                    placeholder={
+                      party.role === "developer" ? "Developer name" :
+                      party.role === "contractor" ? "Main contractor name" :
+                      party.role === "subcontractor" ? "Subcontractor name" :
+                      "Party name"
+                    }
+                    className="flex-1"
+                  />
+                  <Select defaultValue={party.role || undefined}>
+                    <SelectTrigger className="w-44">
+                      <SelectValue placeholder="Role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="developer">Developer</SelectItem>
+                      <SelectItem value="contractor">Main Contractor</SelectItem>
+                      <SelectItem value="subcontractor">Subcontractor</SelectItem>
+                      <SelectItem value="consultant">Consultant</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              ))}
             </div>
-            <Button variant="ghost" size="sm" className="gap-1 text-primary">
+            <Button variant="outline" size="sm" className="gap-1 text-primary w-full" onClick={addParty}>
               <Plus className="h-3 w-3" /> Add another party
             </Button>
           </div>

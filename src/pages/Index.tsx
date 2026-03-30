@@ -6,7 +6,8 @@ import DashboardSidebar from "@/components/DashboardSidebar";
 import StatusBadge from "@/components/StatusBadge";
 import NewProjectModal from "@/components/NewProjectModal";
 import { projects } from "@/data/dummyData";
-import { FileText, Users, Calendar, Plus, Mail, Clock, CheckCircle2 } from "lucide-react";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { FileText, Users, Calendar, Plus, Mail, Clock, CheckCircle2, AlertTriangle } from "lucide-react";
 
 const Index = () => {
   const [newProjectOpen, setNewProjectOpen] = useState(false);
@@ -57,7 +58,7 @@ const Index = () => {
                     <span className="text-sm font-semibold text-foreground">Inbox</span>
                     <span className="h-2 w-2 rounded-full bg-warning" />
                   </div>
-                  <p className="text-xs text-secondary cursor-pointer hover:underline">View {inboxCount} new envelope</p>
+                  <p className="text-xs text-secondary cursor-pointer hover:underline">View {inboxCount} new document</p>
                 </div>
                 <span className="text-3xl font-bold text-foreground">{inboxCount}</span>
               </CardContent>
@@ -69,7 +70,7 @@ const Index = () => {
                     <Clock className="h-5 w-5 text-secondary" />
                     <span className="text-sm font-semibold text-foreground">Waiting for Others</span>
                   </div>
-                  <p className="text-xs text-secondary cursor-pointer hover:underline">View {waitingCount} sent envelopes</p>
+                  <p className="text-xs text-secondary cursor-pointer hover:underline">View {waitingCount} pending documents</p>
                 </div>
                 <span className="text-3xl font-bold text-foreground">{waitingCount}</span>
               </CardContent>
@@ -92,7 +93,7 @@ const Index = () => {
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-foreground">Project Folders</h2>
             <p className="text-sm text-muted-foreground">
-              Blockchain-linked envelopes for tamper-proof project records
+              Blockchain-linked documents for tamper-proof project records
             </p>
           </div>
 
@@ -108,8 +109,19 @@ const Index = () => {
                     <h3 className="text-base font-semibold text-foreground leading-tight pr-2">
                       {project.name}
                     </h3>
-                    <StatusBadge status={project.status} />
+                    <div className="flex items-center gap-2">
+                      <StatusBadge status={project.status} />
+                    </div>
                   </div>
+
+                  {/* Dispute tooltip for disputed projects */}
+                  {project.status === "In Dispute" && (
+                    <div className="flex items-center gap-1.5 mb-2 text-xs text-destructive bg-destructive/5 px-2 py-1 rounded">
+                      <AlertTriangle className="h-3 w-3" />
+                      <span>Disputed by Hughes Bros · 10 Mar 2025</span>
+                    </div>
+                  )}
+
                   <div className="flex items-center gap-5 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1.5">
                       <FileText className="h-3.5 w-3.5" />

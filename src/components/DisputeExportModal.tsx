@@ -26,9 +26,15 @@ const DisputeExportModal = ({ open, onOpenChange, documents }: DisputeExportModa
           {documents.map((doc) => (
             <label key={doc.id} className="flex items-center gap-3 p-2 rounded-md hover:bg-muted cursor-pointer">
               <Checkbox defaultChecked />
-              <span className="text-sm font-medium flex-1">{doc.name}</span>
+              <div className="flex-1 min-w-0">
+                <span className="text-sm font-medium block">{doc.name}</span>
+                <span className="text-[11px] text-muted-foreground">
+                  {doc.date} · {doc.issuedBy || "—"}
+                  {doc.issuedTo ? ` → ${doc.issuedTo}` : ""}
+                </span>
+              </div>
               {doc.blockchainStatus === "verified" && (
-                <Link2 className="h-3.5 w-3.5 text-accent" />
+                <Link2 className="h-3.5 w-3.5 text-accent shrink-0" />
               )}
             </label>
           ))}
