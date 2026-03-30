@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Link2, LayoutDashboard, Mail, FileEdit, Settings, ShieldCheck, User, Pen, CreditCard, HelpCircle, BookOpen, HeadphonesIcon } from "lucide-react";
+import { Link2, LayoutDashboard, FileText, Settings, User, CreditCard, HelpCircle, BookOpen, HeadphonesIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const DashboardSidebar = () => {
@@ -7,15 +7,12 @@ const DashboardSidebar = () => {
 
   const mainNav = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/" },
-    { icon: Mail, label: "Envelopes", path: "/envelopes", badge: 1 },
-    { icon: FileEdit, label: "Drafts", path: "/drafts" },
+    { icon: FileText, label: "Documents", path: "/documents", badge: 1 },
     { icon: Settings, label: "Workspace Management", path: "/workspace" },
   ];
 
   const accountNav = [
-    { icon: ShieldCheck, label: "Document Verification", path: "/verification" },
     { icon: User, label: "Account", path: "/account" },
-    { icon: Pen, label: "Visual Signature", path: "/signature" },
     { icon: CreditCard, label: "Plan & Billing", path: "/billing" },
   ];
 
