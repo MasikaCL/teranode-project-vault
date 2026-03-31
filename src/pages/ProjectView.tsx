@@ -14,11 +14,12 @@ import {
   ArrowLeft, Link2, CheckCircle2, Clock, FileText,
   Building2, Calendar, Banknote, FileCheck, Shield,
   Plus, Lock, Eye, Download, Send, GitBranch, List,
-  AlertTriangle, Filter, Activity,
+  AlertTriangle, Activity, Moon, Sun,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useThemeContext } from "@/hooks/useTheme";
 
 const ProjectView = () => {
   const { id } = useParams();
@@ -30,6 +31,7 @@ const ProjectView = () => {
   const [filterParty, setFilterParty] = useState<string>("all");
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterType, setFilterType] = useState<string>("all");
+  const { theme, toggleTheme } = useThemeContext();
 
   const project = projects.find((p) => p.id === id);
   if (!project) return <div className="p-8">Project not found.</div>;
@@ -58,28 +60,29 @@ const ProjectView = () => {
   const myEnvelopeCount = project.envelopes.filter((e) => e.owner === CURRENT_USER_COMPANY).length;
   const othersEnvelopeCount = project.envelopes.filter((e) => e.owner !== CURRENT_USER_COMPANY).length;
 
-  // Unique filter values
   const uniqueParties = [...new Set(project.envelopes.map(e => e.owner))];
   const uniqueStatuses = [...new Set(project.envelopes.map(e => e.status))];
   const uniqueTypes = [...new Set(project.envelopes.flatMap(e => e.tags))];
 
-  // Dispute info for "In Dispute" projects
   const isDisputed = project.status === "In Dispute";
   const disputedEnvelopes = project.envelopes.filter(e =>
     e.documents.some(d => d.blockchainStatus === "verified" && d.statusNote?.toLowerCase().includes("disputed")) ||
     e.tags.includes("Notice")
   );
 
-  // Activity feed (dummy)
+  // Activity feed with 24h timestamps
   const activityFeed = [
-    ...project.envelopes.slice().reverse().flatMap(env => [
-      { action: `${env.owner} created "${env.name.split("—")[0].trim()}"`, date: env.date, type: "create" as const },
-      ...(env.status === "Completed" ? [{ action: `All parties signed "${env.name.split("—")[0].trim()}"`, date: env.date, type: "sign" as const }] : []),
-      ...env.documents.filter(d => d.blockchainStatus === "verified").map(d => ({
-        action: `"${d.name}" anchored to blockchain`, date: d.timestamp || d.date, type: "blockchain" as const,
-      })),
-    ]),
-  ].slice(0, 10);
+    { action: `Apex Homes Ltd created "NDA"`, date: "14 Jan 2025, 10:15", type: "create" as const },
+    { action: `All parties signed "NDA"`, date: "14 Jan 2025, 14:34", type: "sign" as const },
+    { action: `"NDA" anchored to blockchain`, date: "14 Jan 2025, 14:40", type: "blockchain" as const },
+    { action: `Apex Homes Ltd created "Master Contract (JCT D&B)"`, date: "20 Jan 2025, 14:30", type: "create" as const },
+    { action: `All parties signed "Master Contract"`, date: "20 Jan 2025, 16:12", type: "sign" as const },
+    { action: `"Master Contract" anchored to blockchain`, date: "20 Jan 2025, 16:18", type: "blockchain" as const },
+    { action: `Hughes Bros Construction created "Change Order #1"`, date: "04 Mar 2025, 11:20", type: "create" as const },
+    { action: `Hughes Bros Construction submitted "Payment Application #3"`, date: "01 Apr 2025, 09:00", type: "create" as const },
+    { action: `Apex Homes Ltd issued "Pay-Less Notice"`, date: "10 Apr 2025, 09:42", type: "create" as const },
+    { action: `"Pay-Less Notice" anchored to blockchain`, date: "10 Apr 2025, 09:45", type: "blockchain" as const },
+  ].reverse().slice(0, 8);
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -94,6 +97,12 @@ const ProjectView = () => {
             <span className="text-foreground font-medium">{project.name}</span>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className="h-8 w-8 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
               <span className="text-xs font-semibold text-primary">AH</span>
             </div>
@@ -140,7 +149,7 @@ const ProjectView = () => {
                 className="gap-2"
               >
                 <Plus className="h-4 w-4" />
-                New Envelope
+                New Document
               </Button>
               <Button
                 variant="outline"
@@ -158,9 +167,7 @@ const ProjectView = () => {
             <Card className="mb-5 border-destructive/30 bg-destructive/[0.03]">
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0">
-                    <AlertTriangle className="h-5 w-5 text-destructive" />
-                  </div>
+                  <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <h3 className="text-sm font-semibold text-destructive mb-1">Dispute Mode Active</h3>
                     <p className="text-xs text-muted-foreground mb-2">
@@ -208,23 +215,16 @@ const ProjectView = () => {
               </CardHeader>
               <CardContent className="space-y-2 px-4 pb-4">
                 {project.parties.map((party) => (
-                  <div key={party.name} className="flex items-start gap-2">
-                    <div className={cn(
-                      "h-7 w-7 rounded-full flex items-center justify-center mt-0.5 shrink-0",
-                      party.name === CURRENT_USER_COMPANY
-                        ? "bg-primary/15"
-                        : "bg-muted"
-                    )}>
-                      <Building2 className={cn(
-                        "h-3.5 w-3.5",
-                        party.name === CURRENT_USER_COMPANY ? "text-primary" : "text-muted-foreground"
-                      )} />
-                    </div>
-                    <div>
+                  <div key={party.name} className="flex items-center gap-2">
+                    <Building2 className={cn(
+                      "h-3.5 w-3.5 shrink-0",
+                      party.name === CURRENT_USER_COMPANY ? "text-primary" : "text-muted-foreground"
+                    )} />
+                    <div className="min-w-0">
                       <p className="text-sm font-medium text-foreground leading-tight">
                         {party.name}
                         {party.name === CURRENT_USER_COMPANY && (
-                          <span className="text-[10px] ml-1.5 text-primary font-semibold">(You)</span>
+                          <span className="text-xs ml-1.5 text-primary font-semibold">(You)</span>
                         )}
                       </p>
                       <p className="text-xs text-muted-foreground">{party.role}</p>
@@ -258,9 +258,9 @@ const ProjectView = () => {
                         {transfer.from} → {transfer.to}
                       </p>
                       <div className="flex items-center gap-1 mt-1">
-                        <span className="text-[10px] text-muted-foreground">{transfer.date}</span>
+                        <span className="text-xs text-muted-foreground">{transfer.date}</span>
                         {transfer.verified && (
-                          <span className="text-[10px] text-accent flex items-center gap-0.5">
+                          <span className="text-xs text-accent flex items-center gap-0.5">
                             <CheckCircle2 className="h-2.5 w-2.5" /> On-chain verified
                           </span>
                         )}
@@ -271,30 +271,26 @@ const ProjectView = () => {
 
                 {/* Activity feed */}
                 {activityFeed.length > 0 && (
-                  <>
-                    <div className="border-t pt-3">
-                      <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">Recent Activity</p>
-                      <div className="space-y-2">
-                        {activityFeed.slice(0, 6).map((item, i) => (
-                          <div key={i} className="flex items-start gap-2">
-                            <div className="h-4 w-4 rounded-full bg-muted flex items-center justify-center shrink-0 mt-0.5">
-                              {item.type === "blockchain" ? (
-                                <Link2 className="h-2 w-2 text-accent" />
-                              ) : item.type === "sign" ? (
-                                <CheckCircle2 className="h-2 w-2 text-accent" />
-                              ) : (
-                                <Send className="h-2 w-2 text-muted-foreground" />
-                              )}
-                            </div>
-                            <div>
-                              <p className="text-[11px] text-foreground leading-snug">{item.action}</p>
-                              <p className="text-[10px] text-muted-foreground">{item.date}</p>
-                            </div>
+                  <div className="border-t pt-3">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Recent Activity</p>
+                    <div className="space-y-2">
+                      {activityFeed.slice(0, 6).map((item, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          {item.type === "blockchain" ? (
+                            <Link2 className="h-3.5 w-3.5 text-accent shrink-0 mt-0.5" />
+                          ) : item.type === "sign" ? (
+                            <CheckCircle2 className="h-3.5 w-3.5 text-accent shrink-0 mt-0.5" />
+                          ) : (
+                            <Send className="h-3.5 w-3.5 text-muted-foreground shrink-0 mt-0.5" />
+                          )}
+                          <div>
+                            <p className="text-xs text-foreground leading-snug">{item.action}</p>
+                            <p className="text-xs text-muted-foreground">{item.date}</p>
                           </div>
-                        ))}
-                      </div>
+                        </div>
+                      ))}
                     </div>
-                  </>
+                  </div>
                 )}
                 {project.ownershipTimeline.length === 0 && activityFeed.length === 0 && (
                   <p className="text-xs text-muted-foreground text-center py-2">No activity recorded.</p>
@@ -369,7 +365,6 @@ const ProjectView = () => {
                           Others ({othersEnvelopeCount})
                         </button>
                       </div>
-                      {/* Advanced filters */}
                       <select
                         value={filterParty}
                         onChange={(e) => setFilterParty(e.target.value)}
@@ -405,15 +400,13 @@ const ProjectView = () => {
               ) : project.envelopes.length === 0 ? (
                 /* Empty state */
                 <div className="py-12 text-center">
-                  <div className="h-16 w-16 mx-auto mb-4 rounded-2xl bg-primary/5 flex items-center justify-center">
-                    <FileText className="h-8 w-8 text-primary/40" />
-                  </div>
+                  <FileText className="h-12 w-12 text-primary/30 mx-auto mb-4" />
                   <h3 className="text-base font-semibold text-foreground mb-1">No documents yet</h3>
                   <p className="text-sm text-muted-foreground mb-4 max-w-sm mx-auto">
-                    Start by creating your first envelope — upload a contract, notice, or change order and send it for signature.
+                    Start by creating your first document — upload a contract, notice, or change order and send it for signature.
                   </p>
                   <Button onClick={() => setEnvelopeOpen(true)} className="gap-2">
-                    <Plus className="h-4 w-4" /> Create First Envelope
+                    <Plus className="h-4 w-4" /> Create First Document
                   </Button>
                 </div>
               ) : (
@@ -434,16 +427,11 @@ const ProjectView = () => {
                         )}
                       >
                         <div className="flex items-start gap-3">
-                          <div className={cn(
-                            "h-8 w-8 rounded-md flex items-center justify-center shrink-0 mt-0.5",
-                            isMine ? "bg-primary/10" : "bg-muted"
-                          )}>
-                            {isRestricted ? (
-                              <Lock className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <Send className={cn("h-4 w-4", isMine ? "text-primary" : "text-muted-foreground")} />
-                            )}
-                          </div>
+                          {isRestricted ? (
+                            <Lock className={cn("h-4 w-4 mt-0.5 shrink-0 text-muted-foreground")} />
+                          ) : (
+                            <Send className={cn("h-4 w-4 mt-0.5 shrink-0", isMine ? "text-primary" : "text-muted-foreground")} />
+                          )}
 
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-2 mb-1">
@@ -464,7 +452,7 @@ const ProjectView = () => {
                               </div>
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <span className="text-[11px] text-muted-foreground whitespace-nowrap shrink-0 cursor-help">
+                                  <span className="text-xs text-muted-foreground whitespace-nowrap shrink-0 cursor-help">
                                     {env.date}
                                   </span>
                                 </TooltipTrigger>
@@ -478,7 +466,7 @@ const ProjectView = () => {
                               <Badge
                                 variant="outline"
                                 className={cn(
-                                  "text-[10px] px-1.5 py-0 font-medium",
+                                  "text-xs px-1.5 py-0 font-medium",
                                   env.status === "Completed"
                                     ? "border-accent/30 text-accent bg-accent/5"
                                     : env.status === "In Progress"
@@ -491,7 +479,7 @@ const ProjectView = () => {
                               {env.status === "In Progress" && (
                                 <div className="flex items-center gap-2 flex-1">
                                   <Progress value={progressPct} className="h-1.5 flex-1 max-w-24" />
-                                  <span className="text-[10px] text-muted-foreground">
+                                  <span className="text-xs text-muted-foreground">
                                     {env.completedCount}/{env.totalSigners} completed
                                   </span>
                                 </div>
@@ -500,18 +488,18 @@ const ProjectView = () => {
 
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className={cn(
-                                "text-[10px] px-1.5 py-0.5 rounded font-medium",
+                                "text-xs px-1.5 py-0.5 rounded font-medium",
                                 isMine ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
                               )}>
                                 {isMine ? "Your Document" : env.owner}
                               </span>
                               {isRestricted && (
-                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive/10 text-destructive font-medium flex items-center gap-0.5">
+                                <span className="text-xs px-1.5 py-0.5 rounded bg-destructive/10 text-destructive font-medium flex items-center gap-0.5">
                                   <Lock className="h-2.5 w-2.5" /> Restricted
                                 </span>
                               )}
                               {env.tags.map((tag) => (
-                                <Badge key={tag} variant="secondary" className="text-[10px] px-1.5 py-0 h-5">
+                                <Badge key={tag} variant="secondary" className="text-xs px-1.5 py-0 h-5">
                                   {tag}
                                 </Badge>
                               ))}
@@ -521,12 +509,12 @@ const ProjectView = () => {
                               <div className="flex items-center gap-2 mt-2">
                                 <Link
                                   to={`/project/${project.id}/envelope/${env.id}`}
-                                  className="text-[11px] text-secondary hover:underline flex items-center gap-1"
+                                  className="text-xs text-secondary hover:underline flex items-center gap-1"
                                 >
                                   <Eye className="h-3 w-3" /> View Details
                                 </Link>
                                 <span className="text-muted-foreground">·</span>
-                                <button className="text-[11px] text-muted-foreground hover:text-foreground flex items-center gap-1">
+                                <button className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
                                   <Download className="h-3 w-3" /> Download
                                 </button>
                               </div>

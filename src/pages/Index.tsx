@@ -7,11 +7,13 @@ import StatusBadge from "@/components/StatusBadge";
 import NewProjectModal from "@/components/NewProjectModal";
 import { projects } from "@/data/dummyData";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import { FileText, Users, Calendar, Plus, Mail, Clock, CheckCircle2, AlertTriangle } from "lucide-react";
+import { FileText, Users, Calendar, Plus, Mail, Clock, CheckCircle2, AlertTriangle, Moon, Sun } from "lucide-react";
+import { useThemeContext } from "@/hooks/useTheme";
 
 const Index = () => {
   const [newProjectOpen, setNewProjectOpen] = useState(false);
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useThemeContext();
 
   const inboxCount = 1;
   const waitingCount = 3;
@@ -21,11 +23,17 @@ const Index = () => {
     <div className="flex min-h-screen bg-background">
       <DashboardSidebar />
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
         <header className="border-b bg-card px-6 py-3 flex items-center justify-between">
           <span className="text-sm font-medium text-secondary">Dashboard</span>
           <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className="h-8 w-8 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
               <span className="text-xs font-semibold text-primary">AH</span>
             </div>
@@ -114,7 +122,6 @@ const Index = () => {
                     </div>
                   </div>
 
-                  {/* Dispute tooltip for disputed projects */}
                   {project.status === "In Dispute" && (
                     <div className="flex items-center gap-1.5 mb-2 text-xs text-destructive bg-destructive/5 px-2 py-1 rounded">
                       <AlertTriangle className="h-3 w-3" />

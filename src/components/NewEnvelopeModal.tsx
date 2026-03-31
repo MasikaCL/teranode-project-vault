@@ -26,15 +26,15 @@ const NewEnvelopeModal = ({ open, onOpenChange, parties }: NewEnvelopeModalProps
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>New Signature Request</DialogTitle>
+          <DialogTitle>New Document</DialogTitle>
           <DialogDescription>
-            Create a new envelope with documents for signing
+            Create a new document with files for signing
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
           <div className="space-y-2">
-            <Label>Envelope Name</Label>
+            <Label>Document Name</Label>
             <Input
               placeholder="e.g. Change Order #3 — Additional Drainage Works"
               value={envelopeName}
@@ -109,7 +109,7 @@ const NewEnvelopeModal = ({ open, onOpenChange, parties }: NewEnvelopeModalProps
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
           <Button onClick={() => onOpenChange(false)} className="gap-2">
-            <Plus className="h-4 w-4" /> Create Envelope
+            <Plus className="h-4 w-4" /> Create Document
           </Button>
         </DialogFooter>
       </DialogContent>

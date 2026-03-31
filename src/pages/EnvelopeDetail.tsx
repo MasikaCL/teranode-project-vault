@@ -19,12 +19,11 @@ const EnvelopeDetail = () => {
   const project = projects.find((p) => p.id === id);
   const envelope = project?.envelopes.find((e) => e.id === envId);
 
-  if (!project || !envelope) return <div className="p-8">Envelope not found.</div>;
+  if (!project || !envelope) return <div className="p-8">Document not found.</div>;
 
   const isMine = envelope.owner === CURRENT_USER_COMPANY;
   const progressPct = envelope.totalSigners > 0 ? (envelope.completedCount / envelope.totalSigners) * 100 : 0;
 
-  // Dummy signers data
   const signers = envelope.documents[0]?.parties.flatMap((p) => {
     if (p === "All parties") {
       return project.parties.map((party) => ({
@@ -36,17 +35,16 @@ const EnvelopeDetail = () => {
     return [{ name: p, role: "Party", signed: envelope.status === "Completed" || envelope.completedCount > 0 }];
   }) || [];
 
-  // Dummy audit trail
   const auditTrail = [
-    { action: "Envelope created", by: envelope.owner, date: envelope.date, icon: Send },
+    { action: "Document created", by: envelope.owner, date: envelope.date, icon: Send },
     ...envelope.documents.map((doc) => ({
-      action: `Document "${doc.name}" added`,
+      action: `"${doc.name}" added`,
       by: doc.issuedBy || envelope.owner,
       date: doc.date,
       icon: FileText,
     })),
     ...(envelope.status === "Completed"
-      ? [{ action: "All signatures collected — Envelope completed", by: "System", date: envelope.date, icon: CheckCircle2 }]
+      ? [{ action: "All signatures collected — Document completed", by: "System", date: envelope.date, icon: CheckCircle2 }]
       : []),
     ...(envelope.documents.some(d => d.blockchainStatus === "verified")
       ? [{ action: "Blockchain anchor created", by: "System", date: envelope.date, icon: Link2 }]
@@ -64,7 +62,7 @@ const EnvelopeDetail = () => {
             <span className="text-muted-foreground">/</span>
             <Link to={`/project/${project.id}`} className="text-secondary hover:underline">{project.name}</Link>
             <span className="text-muted-foreground">/</span>
-            <span className="text-foreground font-medium">Envelope</span>
+            <span className="text-foreground font-medium">Document</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
@@ -83,7 +81,7 @@ const EnvelopeDetail = () => {
             Back to {project.name}
           </button>
 
-          {/* Envelope Header */}
+          {/* Document Header */}
           <Card className="mb-5">
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -104,10 +102,10 @@ const EnvelopeDetail = () => {
                       {envelope.status}
                     </Badge>
                     {isMine && (
-                      <Badge className="bg-primary/10 text-primary border-primary/20 text-[10px]">Your Envelope</Badge>
+                      <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">Your Document</Badge>
                     )}
                     {envelope.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-[10px]">{tag}</Badge>
+                      <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
                     ))}
                   </div>
                 </div>
@@ -128,7 +126,6 @@ const EnvelopeDetail = () => {
                 <span className="mx-2">·</span>
                 <span>Created: {envelope.date}</span>
               </div>
-              {/* Progress */}
               <div className="flex items-center gap-3">
                 <Progress value={progressPct} className="h-2 flex-1 max-w-xs" />
                 <span className="text-sm text-muted-foreground">
@@ -175,7 +172,7 @@ const EnvelopeDetail = () => {
                         <BlockchainBadge status={doc.blockchainStatus} />
                       </div>
                       {!docRestricted && (
-                        <div className="flex items-center gap-3 text-[11px] text-muted-foreground ml-5">
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground ml-5">
                           <span>{doc.date}</span>
                           <span>·</span>
                           <span>{doc.issuedBy} → {doc.issuedTo}</span>
@@ -189,7 +186,6 @@ const EnvelopeDetail = () => {
 
             {/* Signer Progress + Audit Trail */}
             <div className="space-y-5">
-              {/* Signers */}
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -202,22 +198,22 @@ const EnvelopeDetail = () => {
                     <div key={i} className="flex items-center justify-between p-2 rounded-md border">
                       <div className="flex items-center gap-2">
                         <div className={cn(
-                          "h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-semibold",
+                          "h-6 w-6 rounded-full flex items-center justify-center text-xs font-semibold",
                           signer.signed ? "bg-accent/15 text-accent" : "bg-muted text-muted-foreground"
                         )}>
                           {signer.name.charAt(0)}
                         </div>
                         <div>
                           <p className="text-xs font-medium text-foreground">{signer.name}</p>
-                          <p className="text-[10px] text-muted-foreground">{signer.role}</p>
+                          <p className="text-xs text-muted-foreground">{signer.role}</p>
                         </div>
                       </div>
                       {signer.signed ? (
-                        <span className="flex items-center gap-1 text-[10px] text-accent font-medium">
+                        <span className="flex items-center gap-1 text-xs text-accent font-medium">
                           <CheckCircle2 className="h-3 w-3" /> Signed
                         </span>
                       ) : (
-                        <span className="flex items-center gap-1 text-[10px] text-warning font-medium">
+                        <span className="flex items-center gap-1 text-xs text-warning font-medium">
                           <Clock className="h-3 w-3" /> Pending
                         </span>
                       )}
@@ -226,7 +222,6 @@ const EnvelopeDetail = () => {
                 </CardContent>
               </Card>
 
-              {/* Audit Trail */}
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -240,11 +235,9 @@ const EnvelopeDetail = () => {
                       {i < auditTrail.length - 1 && (
                         <div className="absolute left-[7px] top-5 bottom-0 w-px bg-border" />
                       )}
-                      <div className="absolute left-0 top-0.5 h-3.5 w-3.5 rounded-full bg-primary/10 flex items-center justify-center">
-                        <entry.icon className="h-2 w-2 text-primary" />
-                      </div>
+                      <entry.icon className="absolute left-0 top-0.5 h-3.5 w-3.5 text-primary" />
                       <p className="text-xs font-medium text-foreground">{entry.action}</p>
-                      <p className="text-[10px] text-muted-foreground">{entry.by} · {entry.date}</p>
+                      <p className="text-xs text-muted-foreground">{entry.by} · {entry.date}</p>
                     </div>
                   ))}
                 </CardContent>
