@@ -1,28 +1,24 @@
 import { Link, useLocation } from "react-router-dom";
-import { Link2, LayoutDashboard, FileText, Settings, User, CreditCard, HelpCircle, BookOpen, HeadphonesIcon } from "lucide-react";
+import { Link2, LayoutDashboard, FileText, Settings, CreditCard, HeadphonesIcon, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useThemeContext } from "@/hooks/useTheme";
 
 const DashboardSidebar = () => {
   const location = useLocation();
+  const { theme, toggleTheme } = useThemeContext();
 
-  const mainNav = [
+  const workspaceNav = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/" },
-    { icon: FileText, label: "Documents", path: "/documents", badge: 1 },
-    { icon: Settings, label: "Workspace Management", path: "/workspace" },
+    { icon: FileText, label: "Documents", path: "/documents" },
   ];
 
   const accountNav = [
-    { icon: User, label: "Account", path: "/account" },
+    { icon: Settings, label: "Settings", path: "/settings" },
     { icon: CreditCard, label: "Plan & Billing", path: "/billing" },
+    { icon: HeadphonesIcon, label: "Support", path: "/support" },
   ];
 
-  const supportNav = [
-    { icon: HelpCircle, label: "Terms of Use", path: "/terms" },
-    { icon: BookOpen, label: "Documentation & Guides", path: "/docs" },
-    { icon: HeadphonesIcon, label: "Contact Support", path: "/support" },
-  ];
-
-  const renderNavItem = (item: { icon: React.ElementType; label: string; path: string; badge?: number }) => {
+  const renderNavItem = (item: { icon: React.ElementType; label: string; path: string }) => {
     const isActive = location.pathname === item.path;
     return (
       <Link
@@ -37,11 +33,6 @@ const DashboardSidebar = () => {
       >
         <item.icon className="h-4 w-4 shrink-0" />
         <span className="flex-1">{item.label}</span>
-        {item.badge && (
-          <span className="h-5 min-w-5 flex items-center justify-center rounded-full bg-secondary text-secondary-foreground text-[10px] font-semibold px-1.5">
-            {item.badge}
-          </span>
-        )}
       </Link>
     );
   };
@@ -58,35 +49,34 @@ const DashboardSidebar = () => {
 
       {/* Workspace label */}
       <div className="px-4 pt-4 pb-2">
-        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
           Apex Homes Ltd
         </p>
       </div>
 
-      {/* Main Nav */}
+      {/* Workspace Nav */}
       <nav className="px-3 space-y-0.5">
-        {mainNav.map(renderNavItem)}
+        {workspaceNav.map(renderNavItem)}
       </nav>
 
       {/* Account */}
       <div className="px-4 pt-5 pb-2">
-        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Account</p>
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Account</p>
       </div>
       <nav className="px-3 space-y-0.5">
         {accountNav.map(renderNavItem)}
       </nav>
 
-      {/* Support */}
-      <div className="px-4 pt-5 pb-2">
-        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Support</p>
-      </div>
-      <nav className="px-3 space-y-0.5">
-        {supportNav.map(renderNavItem)}
-      </nav>
-
-      {/* Version */}
+      {/* Version + Theme Toggle */}
       <div className="mt-auto px-4 py-3 border-t flex items-center justify-between">
-        <span className="text-[11px] text-muted-foreground">v1.6</span>
+        <span className="text-xs text-muted-foreground">v1.6</span>
+        <button
+          onClick={toggleTheme}
+          className="h-7 w-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        </button>
       </div>
     </aside>
   );

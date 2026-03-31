@@ -15,7 +15,6 @@ const DocumentDetail = () => {
   const navigate = useNavigate();
 
   const project = projects.find((p) => p.id === id);
-  // Search in both top-level documents and envelope documents
   let document = project?.documents.find((d) => d.id === docId);
   if (!document) {
     for (const env of project?.envelopes || []) {
@@ -76,7 +75,6 @@ const DocumentDetail = () => {
       <DashboardSidebar />
 
       <div className="flex-1 flex flex-col">
-        {/* Top bar */}
         <header className="border-b bg-card px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
             <Link to="/" className="text-secondary hover:underline">Dashboard</Link>
@@ -94,7 +92,6 @@ const DocumentDetail = () => {
         </header>
 
         <main className="flex-1 px-8 py-6 max-w-3xl">
-          {/* Breadcrumb */}
           <button
             onClick={() => navigate(`/project/${project.id}`)}
             className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors"
@@ -111,7 +108,7 @@ const DocumentDetail = () => {
                     <CardTitle className="text-lg">{document.name}</CardTitle>
                     <Badge variant="outline">{document.type}</Badge>
                     {isMine && (
-                      <Badge className="bg-primary/10 text-primary border-primary/20 text-[10px]">
+                      <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
                         Your Document
                       </Badge>
                     )}
@@ -122,15 +119,13 @@ const DocumentDetail = () => {
             </CardHeader>
 
             <CardContent className="space-y-6">
-              {/* Owner info */}
               <div className="flex items-center gap-2 px-3 py-2 rounded-md bg-muted/50 border">
                 <Building2 className="h-4 w-4 text-muted-foreground" />
                 <span className="text-xs text-muted-foreground">Owned by:</span>
                 <span className="text-xs font-medium text-foreground">{document.owner}</span>
-                {isMine && <Badge variant="secondary" className="text-[10px] ml-auto">You</Badge>}
+                {isMine && <Badge variant="secondary" className="text-xs ml-auto">You</Badge>}
               </div>
 
-              {/* Details Grid */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground flex items-center gap-1">
@@ -152,7 +147,6 @@ const DocumentDetail = () => {
                 </div>
               </div>
 
-              {/* Blockchain Anchor */}
               {document.hash && (
                 <div className="border rounded-lg p-4 bg-accent/5 border-accent/20">
                   <div className="flex items-center gap-2 mb-2">
@@ -172,7 +166,6 @@ const DocumentDetail = () => {
                 </div>
               )}
 
-              {/* Status */}
               {document.statusNote && (
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-accent" />
@@ -180,7 +173,6 @@ const DocumentDetail = () => {
                 </div>
               )}
 
-              {/* Linked Documents */}
               {document.parentDocId && (
                 <div className="border rounded-lg p-4">
                   <p className="text-xs text-muted-foreground mb-2">Linked Documents</p>
@@ -194,7 +186,6 @@ const DocumentDetail = () => {
                 </div>
               )}
 
-              {/* Action Buttons */}
               <div className="flex items-center gap-3 pt-2 border-t">
                 <Button variant="outline" className="gap-2">
                   <Download className="h-4 w-4" /> Download

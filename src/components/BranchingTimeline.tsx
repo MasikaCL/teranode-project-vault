@@ -39,12 +39,27 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const maxCol = Math.max(...branchingNodes.map((n) => n.column));
-  const maxTrack = Math.max(...branchingNodes.map((n) => n.partyTrack));
-  const svgW = TRACK_LABEL_W + (maxCol + 1) * (NODE_W + COL_GAP) + PADDING_RIGHT;
-  const svgH = PADDING_TOP + (maxTrack + 1) * (NODE_H + ROW_GAP) + 40;
+  // Determine which tracks have nodes
+  const activeTracks = new Set(branchingNodes.map((n) => n.partyTrack));
+  const activePartyTracks = partyTracks.filter((t) => activeTracks.has(t.trackIndex));
 
-  // Find all nodes connected to hovered node
+  // Remap track positions to eliminate gaps from empty lanes
+  const trackPositionMap = new Map<number, number>();
+  activePartyTracks.forEach((track, i) => {
+    trackPositionMap.set(track.trackIndex, i);
+  });
+
+  function getRemappedNodePos(node: TreeNode) {
+    const x = TRACK_LABEL_W + node.column * (NODE_W + COL_GAP);
+    const mappedTrack = trackPositionMap.get(node.partyTrack) ?? node.partyTrack;
+    const y = PADDING_TOP + mappedTrack * (NODE_H + ROW_GAP);
+    return { x, y };
+  }
+
+  const maxCol = Math.max(...branchingNodes.map((n) => n.column));
+  const svgW = TRACK_LABEL_W + (maxCol + 1) * (NODE_W + COL_GAP) + PADDING_RIGHT;
+  const svgH = PADDING_TOP + activePartyTracks.length * (NODE_H + ROW_GAP) + 40;
+
   const getConnectedIds = useCallback((nodeId: string | null): Set<string> => {
     if (!nodeId) return new Set();
     const ids = new Set<string>();
@@ -53,7 +68,6 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
       ids.add(id);
       const node = branchingNodes.find((n) => n.id === id);
       if (node) node.parentIds.forEach(traverse);
-      // Also traverse children
       branchingNodes.filter((n) => n.parentIds.includes(id)).forEach((n) => traverse(n.id));
     };
     traverse(nodeId);
@@ -62,7 +76,6 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
 
   const connectedIds = getConnectedIds(hoveredNode);
 
-  // Draw edges
   const edges: { from: TreeNode; to: TreeNode }[] = [];
   branchingNodes.forEach((node) => {
     node.parentIds.forEach((pid) => {
@@ -88,7 +101,7 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
         <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={handleZoomReset}>
           <RotateCcw className="h-3.5 w-3.5" />
         </Button>
-        <span className="text-[10px] text-muted-foreground px-1">{Math.round(zoom * 100)}%</span>
+        <span className="text-xs text-muted-foreground px-1">{Math.round(zoom * 100)}%</span>
       </div>
 
       <div
@@ -102,12 +115,12 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
           viewBox={`0 0 ${svgW} ${svgH}`}
           className="select-none"
         >
-          {/* Track labels (fixed-ish on left) */}
-          {partyTracks.map((track) => {
-            const y = PADDING_TOP + track.trackIndex * (NODE_H + ROW_GAP) + NODE_H / 2;
+          {/* Track labels — only active tracks */}
+          {activePartyTracks.map((track) => {
+            const mappedIndex = trackPositionMap.get(track.trackIndex) ?? track.trackIndex;
+            const y = PADDING_TOP + mappedIndex * (NODE_H + ROW_GAP) + NODE_H / 2;
             return (
               <g key={track.trackIndex}>
-                {/* Track line */}
                 <line
                   x1={TRACK_LABEL_W - 10}
                   y1={y}
@@ -118,13 +131,12 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
                   strokeDasharray="4 4"
                   opacity={0.2}
                 />
-                {/* Label */}
                 <text
                   x={10}
                   y={y}
                   dominantBaseline="middle"
                   fill={track.colorHex}
-                  fontSize={11}
+                  fontSize={12}
                   fontWeight={600}
                   fontFamily="Inter, sans-serif"
                 >
@@ -136,8 +148,8 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
 
           {/* Edges */}
           {edges.map(({ from, to }, i) => {
-            const fromPos = getNodePos(from);
-            const toPos = getNodePos(to);
+            const fromPos = getRemappedNodePos(from);
+            const toPos = getRemappedNodePos(to);
             const x1 = fromPos.x + NODE_W;
             const y1 = fromPos.y + NODE_H / 2;
             const x2 = toPos.x;
@@ -146,8 +158,6 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
             const isHighlighted = hoveredNode && connectedIds.has(from.id) && connectedIds.has(to.id);
             const edgeColor = trackColors[to.partyTrack] || "#8E9196";
             const isCrossingTracks = from.partyTrack !== to.partyTrack;
-
-            // Control points for curved lines
             const midX = (x1 + x2) / 2;
 
             return (
@@ -163,19 +173,10 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
                   opacity={hoveredNode ? (isHighlighted ? 1 : 0.15) : 0.6}
                   className="transition-opacity"
                 />
-                {/* Chain link icon on cross-track edges */}
                 {isCrossingTracks && (
                   <g transform={`translate(${midX - 6}, ${(y1 + y2) / 2 - 6})`}>
                     <circle cx={6} cy={6} r={7} fill="white" stroke={edgeColor} strokeWidth={1} />
-                    <text
-                      x={6}
-                      y={7}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fontSize={8}
-                    >
-                      🔗
-                    </text>
+                    <text x={6} y={7} textAnchor="middle" dominantBaseline="middle" fontSize={8}>🔗</text>
                   </g>
                 )}
               </g>
@@ -184,7 +185,7 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
 
           {/* Nodes */}
           {branchingNodes.map((node) => {
-            const pos = getNodePos(node);
+            const pos = getRemappedNodePos(node);
             const cfg = statusConfig[node.status];
             const trackColor = trackColors[node.partyTrack];
             const isHovered = hoveredNode === node.id;
@@ -200,12 +201,8 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
                 className="cursor-pointer"
                 opacity={isDimmed ? 0.2 : 1}
               >
-                {/* Node card */}
                 <rect
-                  x={0}
-                  y={0}
-                  width={NODE_W}
-                  height={NODE_H}
+                  x={0} y={0} width={NODE_W} height={NODE_H}
                   rx={node.isMilestone ? 12 : 8}
                   fill="white"
                   stroke={node.isDisputed ? "#EF4444" : node.status === "future" ? "#8E9196" : trackColor}
@@ -213,98 +210,62 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
                   strokeDasharray={node.status === "future" ? "6 3" : "none"}
                   className="transition-all"
                 />
-                {/* Milestone: larger appearance */}
                 {node.isMilestone && (
                   <rect
-                    x={-3}
-                    y={-3}
-                    width={NODE_W + 6}
-                    height={NODE_H + 6}
-                    rx={14}
-                    fill="none"
+                    x={-3} y={-3} width={NODE_W + 6} height={NODE_H + 6}
+                    rx={14} fill="none"
                     stroke={node.status === "future" ? "#8E9196" : trackColor}
-                    strokeWidth={1}
-                    strokeDasharray="6 3"
-                    opacity={0.4}
+                    strokeWidth={1} strokeDasharray="6 3" opacity={0.4}
                   />
                 )}
-                {/* Disputed red glow */}
                 {node.isDisputed && (
                   <rect
-                    x={-2}
-                    y={-2}
-                    width={NODE_W + 4}
-                    height={NODE_H + 4}
-                    rx={10}
-                    fill="none"
-                    stroke="#EF4444"
-                    strokeWidth={1}
-                    opacity={0.3}
+                    x={-2} y={-2} width={NODE_W + 4} height={NODE_H + 4}
+                    rx={10} fill="none" stroke="#EF4444" strokeWidth={1} opacity={0.3}
                   />
                 )}
                 {/* Name */}
-                <text
-                  x={10}
-                  y={22}
-                  fontSize={10.5}
-                  fontWeight={600}
-                  fill="#1a1a2e"
-                  fontFamily="Inter, sans-serif"
-                >
+                <text x={10} y={18} fontSize={10.5} fontWeight={600} fill="#1a1a2e" fontFamily="Inter, sans-serif">
                   {node.name.length > 24 ? node.name.slice(0, 22) + "…" : node.name}
                 </text>
                 {/* Party */}
-                <text
-                  x={10}
-                  y={38}
-                  fontSize={9}
-                  fill={trackColor}
-                  fontFamily="Inter, sans-serif"
-                  fontWeight={500}
-                >
+                <text x={10} y={32} fontSize={9} fill={trackColor} fontFamily="Inter, sans-serif" fontWeight={500}>
                   {node.party.length > 28 ? node.party.slice(0, 26) + "…" : node.party}
                 </text>
                 {/* Date */}
-                <text
-                  x={10}
-                  y={52}
-                  fontSize={8.5}
-                  fill="#8E9196"
-                  fontFamily="Inter, sans-serif"
-                >
+                <text x={10} y={44} fontSize={9} fill="#8E9196" fontFamily="Inter, sans-serif">
                   {node.date}
                 </text>
                 {/* Status badge */}
                 <rect
-                  x={10}
-                  y={58}
-                  width={node.status === "verified" ? 90 : 60}
-                  height={14}
-                  rx={3}
+                  x={10} y={50}
+                  width={node.isDisputed ? 80 : node.status === "verified" ? 90 : 60}
+                  height={14} rx={3}
                   fill={
                     node.isDisputed ? "#FEE2E2" :
                     node.status === "verified" ? "#DCFCE7" :
                     node.status === "signed" ? "#DCFCE7" :
-                    node.status === "pending" ? "#FEF9C3" :
-                    "#F3F4F6"
+                    node.status === "pending" ? "#FEF9C3" : "#F3F4F6"
                   }
                 />
                 <text
-                  x={14}
-                  y={68}
-                  fontSize={7.5}
-                  fontWeight={600}
+                  x={14} y={60} fontSize={8} fontWeight={600}
                   fill={
                     node.isDisputed ? "#EF4444" :
                     node.status === "verified" ? "#16A34A" :
                     node.status === "signed" ? "#16A34A" :
-                    node.status === "pending" ? "#CA8A04" :
-                    "#6B7280"
+                    node.status === "pending" ? "#CA8A04" : "#6B7280"
                   }
                   fontFamily="Inter, sans-serif"
                 >
                   {node.isDisputed ? "Disputed ⚠" : cfg.label}
                 </text>
+                {/* Disputed context line */}
+                {node.isDisputed && (
+                  <text x={10} y={72} fontSize={7.5} fill="#EF4444" fontFamily="Inter, sans-serif">
+                    Hughes Bros Construction · 10 Apr 2025
+                  </text>
+                )}
               </g>
             );
           })}
@@ -314,7 +275,7 @@ const BranchingTimeline = ({ projectId }: BranchingTimelineProps) => {
       {/* Blocking note for milestone */}
       {branchingNodes.filter(n => n.blockingNote).map(node => (
         <div key={node.id} className="mt-2 px-3 py-2 rounded-md bg-warning/5 border border-warning/20">
-          <p className="text-[11px] text-warning font-medium flex items-center gap-1.5">
+          <p className="text-xs text-warning font-medium flex items-center gap-1.5">
             <AlertTriangle className="h-3 w-3" />
             {node.name}: {node.blockingNote}
           </p>
