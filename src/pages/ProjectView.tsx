@@ -300,6 +300,9 @@ const ProjectView = () => {
                       <div className="absolute left-0 top-1 h-3.5 w-3.5 rounded-full bg-primary/15 flex items-center justify-center">
                         <Link2 className="h-2.5 w-2.5 text-primary" />
                       </div>
+                      <Badge variant="outline" className="text-xs mb-0.5 border-primary/20 text-primary bg-primary/5">
+                        {transfer.transferType ?? "Control transfer"}
+                      </Badge>
                       <p className="text-xs font-medium text-foreground leading-snug">{transfer.description}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {transfer.from} → {transfer.to}
