@@ -42,10 +42,8 @@ const ProjectView = () => {
   if (!project) return <div className="p-8">Project not found.</div>;
 
   // Project-level setting: who can create downstream contracts
-  type DownstreamPerm = "developer_only" | "developer_and_main" | "any_party";
-  const downstreamPermission: DownstreamPerm = "developer_and_main";
+  const downstreamPermission = "developer_and_main"; // "developer_only" | "developer_and_main" | "any_party"
 
-  // Determine current user's role in this project
   const currentUserParty = project.parties.find(p => p.name === CURRENT_USER_COMPANY);
   const currentUserRole = currentUserParty?.role ?? "";
   const canCreateDownstream =
