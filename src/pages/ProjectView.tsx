@@ -46,10 +46,7 @@ const ProjectView = () => {
 
   const currentUserParty = project.parties.find(p => p.name === CURRENT_USER_COMPANY);
   const currentUserRole = currentUserParty?.role ?? "";
-  const canCreateDownstream =
-    downstreamPermission === "any_party" ||
-    (downstreamPermission === "developer_and_main" && (currentUserRole === "Developer" || currentUserRole === "Main Contractor")) ||
-    (downstreamPermission === "developer_only" && currentUserRole === "Developer");
+  const canCreateDownstream = ["Developer", "Main Contractor"].includes(currentUserRole);
 
   const filteredEnvelopes = project.envelopes
     .filter((env) => {
