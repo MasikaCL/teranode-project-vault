@@ -597,6 +597,10 @@ const ProjectView = () => {
         onOpenChange={setEnvelopeOpen}
         parties={project.parties}
       />
+      <AddParticipantModal
+        open={addParticipantOpen}
+        onOpenChange={setAddParticipantOpen}
+      />
     </div>
   );
 };
