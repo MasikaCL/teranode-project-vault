@@ -485,6 +485,7 @@ export const projects: Project[] = [
         verified: true,
         transferType: "Control withdrawn",
         reason: "Termination / Insolvency",
+        resultingState: "Package returned to main contractor pending reassignment",
       },
     ],
   },
