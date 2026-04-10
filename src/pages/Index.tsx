@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import DashboardSidebar from "@/components/DashboardSidebar";
@@ -24,6 +24,18 @@ const Index = () => {
       <DashboardSidebar />
 
       <div className="flex-1 flex flex-col min-w-0">
+        {/* Prototype banner */}
+        <div className="sticky top-0 z-40 border-b bg-amber-50 text-amber-950">
+          <div className="px-6 py-2 flex items-center justify-between gap-3">
+            <span className="text-xs font-medium">
+              You are viewing a prototype.
+            </span>
+            <Button size="sm" variant="outline" asChild className="h-7 px-2.5 bg-white/60">
+              <Link to="/early-access">Go back to Home</Link>
+            </Button>
+          </div>
+        </div>
+
         {/* Top bar */}
         <header className="border-b bg-card px-6 py-3 flex items-center justify-between">
           <span className="text-sm font-medium text-secondary">Dashboard</span>

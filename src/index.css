@@ -4,6 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  /* Override Tailwind teal-500 to Teranode green. */
+  .bg-teal-500 {
+    background-color: rgb(40, 175, 96) !important;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 98%;
