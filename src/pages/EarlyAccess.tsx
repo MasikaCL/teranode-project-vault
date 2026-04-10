@@ -127,7 +127,7 @@ const EarlyAccess = () => {
   };
 
   const scrollToSignup = () => {
-    document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("signup")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const scrollToChainOfCustody = () => {
@@ -240,7 +240,7 @@ const EarlyAccess = () => {
               <p className="text-muted-foreground leading-relaxed">
                 Teranode Sign is a real product, not a waitlist. Teams can sign up
                 and start using it immediately to manage, sign, and timestamp
-                construction documents.
+                documents.
               </p>
             </div>
           </Reveal>
@@ -785,7 +785,7 @@ const EarlyAccess = () => {
 
           {/* ─── PILOT FIT + APPLICATION ─── */}
           <Reveal>
-            <div id="signup" className="max-w-2xl mx-auto">
+            <div id="signup" className="max-w-2xl mx-auto scroll-mt-24 md:scroll-mt-28">
               <div className="text-center mb-10">
                 <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-[rgb(40,175,96)]">
                   Pilot application
