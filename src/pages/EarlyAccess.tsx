@@ -158,7 +158,7 @@ const EarlyAccess = () => {
                   <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer">Start trial</a>
                 </Button>
                 <Button size="sm" onClick={scrollToSignup}>
-                  Apply to join the pilot
+                  Become a design partner
                 </Button>
               </>
             )}
@@ -186,17 +186,16 @@ const EarlyAccess = () => {
               For multi-party teams
             </p>
             <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1] mb-6">
-              Your contracts, signed and provable.{" "}
+              Your project record, signed and provable.{" "}
               <span className="text-primary">Built for disputes.</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-2xl mx-auto">
-              Teranode Sign is a working app you can use today to sign and anchor
-              important documents to the blockchain — and we’re now recruiting
-              teams to shape our next features for disputes and chain of custody.
+              Teranode Sign is a working app you can use today to sign and anchor important documents to the blockchain.
+              We’re now recruiting a small number of design partners to shape project chain-of-custody workflows for high-stakes disputes.
             </p>
             <div ref={heroCtasRef} className="flex flex-col sm:flex-row gap-3 justify-center mb-5">
               <Button size="lg" onClick={scrollToSignup} className="text-base px-8">
-                Apply to join the pilot <ArrowRight className="ml-2 h-4 w-4" />
+                Become a design partner <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button
                 size="lg"
@@ -238,132 +237,163 @@ const EarlyAccess = () => {
                 What's live and ready now
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Teranode Sign is a real product, not a waitlist. Teams can sign up
-                and start using it immediately to manage, sign, and timestamp
-                documents.
+                Teranode Sign is a real product, not a waitlist. These features are live today for teams managing,
+                signing, and timestamping documents.
               </p>
             </div>
           </Reveal>
 
-          {/* Feature 1 — Upload & sign */}
-          <Reveal>
-            <div className="grid md:grid-cols-2 gap-10 items-center mb-20">
-              <div>
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <FileText className="h-4 w-4 text-primary" />
+          <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+            {/* Feature 1 — Upload & sign */}
+            <Reveal>
+              <div className="h-full rounded-2xl border border-border bg-card/50 p-6 shadow-sm">
+                <div className="flex flex-col h-full">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <FileText className="h-4 w-4 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">Upload and request signatures</h3>
+                  <p className="text-muted-foreground leading-relaxed mb-5">
+                    Send PDF or Word contracts, notices, and approvals for signature.
+                    Set up recipients, assign signing roles, and track every step of
+                    the workflow in one place. Available in Teranode Sign today.
+                  </p>
+                  <div className="mt-auto rounded-xl overflow-hidden border border-border/60 bg-background p-3 aspect-[16/10] flex items-center justify-center">
+                    <img
+                      src={landingUploadDocs}
+                      alt="Upload documents interface"
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Upload and request signatures</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Send PDF or Word contracts, notices, and approvals for signature.
-                  Set up recipients, assign signing roles, and track every step of
-                  the workflow in one place.
-                </p>
               </div>
-              <div className="rounded-xl overflow-hidden">
-                <img src={landingUploadDocs} alt="Upload documents interface" className="w-full h-auto" loading="lazy" />
-              </div>
-            </div>
-          </Reveal>
+            </Reveal>
 
-          {/* Feature 2 — Document Verification (reversed) */}
-          <Reveal>
-            <div className="grid md:grid-cols-2 gap-10 items-center mb-20">
-              <div className="order-2 md:order-1 rounded-xl overflow-hidden">
-                <img src={landingDocVerification} alt="Document verification with blockchain proof" className="w-full h-auto" loading="lazy" />
-              </div>
-              <div className="order-1 md:order-2">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Link2 className="h-4 w-4 text-primary" />
+            {/* Feature 2 — Document Verification */}
+            <Reveal>
+              <div className="h-full rounded-2xl border border-border bg-card/50 p-6 shadow-sm">
+                <div className="flex flex-col h-full">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Link2 className="h-4 w-4 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">Document verification</h3>
+                  <p className="text-muted-foreground leading-relaxed mb-5">
+                    Verify any signed document against an independent, tamper-proof
+                    blockchain record. Every signature and timestamp is provable
+                    on-chain — no single party controls the proof. Available in Teranode Sign today.
+                  </p>
+                  <div className="mt-auto rounded-xl overflow-hidden border border-border/60 bg-background p-3 aspect-[16/10] flex items-center justify-center">
+                    <img
+                      src={landingDocVerification}
+                      alt="Document verification with blockchain proof"
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Document verification</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Verify any signed document against an independent, tamper-proof
-                  blockchain record. Every signature and timestamp is provable
-                  on-chain — no single party controls the proof.
-                </p>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
 
-          {/* Feature 3 — Custom signing flows */}
-          <Reveal>
-            <div className="grid md:grid-cols-2 gap-10 items-center mb-20">
-              <div>
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <ListOrdered className="h-4 w-4 text-primary" />
+            {/* Feature 3 — Custom signing flows */}
+            <Reveal>
+              <div className="h-full rounded-2xl border border-border bg-card/50 p-6 shadow-sm">
+                <div className="flex flex-col h-full">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <ListOrdered className="h-4 w-4 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">Custom signing flows</h3>
+                  <p className="text-muted-foreground leading-relaxed mb-5">
+                    Set sequential or custom signing orders for recipients to review
+                    and sign documents. Control who signs first, who approves, and
+                    who receives a copy. Available in Teranode Sign today.
+                  </p>
+                  <div className="mt-auto rounded-xl overflow-hidden border border-border/60 bg-background p-3 aspect-[16/10] flex items-center justify-center">
+                    <img
+                      src={landingSigningOrders}
+                      alt="Custom signing order setup"
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Custom signing flows</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Set sequential or custom signing orders for recipients to review
-                  and sign documents. Control who signs first, who approves, and
-                  who receives a copy.
-                </p>
               </div>
-              <div className="rounded-xl overflow-hidden">
-                <img src={landingSigningOrders} alt="Custom signing order setup" className="w-full h-auto" loading="lazy" />
-              </div>
-            </div>
-          </Reveal>
+            </Reveal>
 
-          {/* Feature 4 — Tags (reversed) */}
-          <Reveal>
-            <div className="grid md:grid-cols-2 gap-10 items-center mb-20">
-              <div className="order-2 md:order-1 rounded-xl overflow-hidden">
-                <img src={landingTags} alt="Organise documents with tags" className="w-full h-auto" loading="lazy" />
-              </div>
-              <div className="order-1 md:order-2">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Tag className="h-4 w-4 text-primary" />
+            {/* Feature 4 — Tags */}
+            <Reveal>
+              <div className="h-full rounded-2xl border border-border bg-card/50 p-6 shadow-sm">
+                <div className="flex flex-col h-full">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Tag className="h-4 w-4 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">Tags and organisation</h3>
+                  <p className="text-muted-foreground leading-relaxed mb-5">
+                    Organise documents by project, counterparty, and type for faster
+                    retrieval. Build your own tagging structure to match how your
+                    team works. Available in Teranode Sign today.
+                  </p>
+                  <div className="mt-auto rounded-xl overflow-hidden border border-border/60 bg-background p-3 aspect-[16/10] flex items-center justify-center">
+                    <img
+                      src={landingTags}
+                      alt="Organise documents with tags"
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Tags and organisation</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Organise documents by project, counterparty, and type for faster
-                  retrieval. Build your own tagging structure to match how your
-                  team works.
-                </p>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
 
-          {/* Feature 5 — Action dates */}
-          <Reveal>
-            <div className="grid md:grid-cols-2 gap-10 items-center mb-20">
-              <div>
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Bell className="h-4 w-4 text-primary" />
+            {/* Feature 5 — Action dates */}
+            <Reveal>
+              <div className="h-full rounded-2xl border border-border bg-card/50 p-6 shadow-sm">
+                <div className="flex flex-col h-full">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Bell className="h-4 w-4 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">Action dates and reminders</h3>
+                  <p className="text-muted-foreground leading-relaxed mb-5">
+                    Track expirations, renewals, and key contract milestones with
+                    reminders. Never miss a deadline that could affect your
+                    contractual position. Available in Teranode Sign today.
+                  </p>
+                  <div className="mt-auto rounded-xl overflow-hidden border border-border/60 bg-background p-3 aspect-[16/10] flex items-center justify-center">
+                    <img
+                      src={landingActions}
+                      alt="Action dates and reminders"
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Action dates and reminders</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Track expirations, renewals, and key contract milestones with
-                  reminders. Never miss a deadline that could affect your
-                  contractual position.
-                </p>
               </div>
-              <div className="rounded-xl overflow-hidden">
-                <img src={landingActions} alt="Action dates and reminders" className="w-full h-auto" loading="lazy" />
-              </div>
-            </div>
-          </Reveal>
+            </Reveal>
 
-          {/* Feature 6 — PIN access (reversed) */}
-          <Reveal>
-            <div className="grid md:grid-cols-2 gap-10 items-center mb-14">
-              <div className="order-2 md:order-1 rounded-xl overflow-hidden">
-                <img src={landingPin} alt="PIN-protected document access" className="w-full h-auto" loading="lazy" />
-              </div>
-              <div className="order-1 md:order-2">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Lock className="h-4 w-4 text-primary" />
+            {/* Feature 6 — PIN access */}
+            <Reveal>
+              <div className="h-full rounded-2xl border border-border bg-card/50 p-6 shadow-sm">
+                <div className="flex flex-col h-full">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Lock className="h-4 w-4 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">PIN-protected access</h3>
+                  <p className="text-muted-foreground leading-relaxed mb-5">
+                    Add an extra security layer with a one-time PIN for sensitive
+                    documents. Control who can open, view, and interact with
+                    confidential project records. Available in Teranode Sign today.
+                  </p>
+                  <div className="mt-auto rounded-xl overflow-hidden border border-border/60 bg-background p-3 aspect-[16/10] flex items-center justify-center">
+                    <img
+                      src={landingPin}
+                      alt="PIN-protected document access"
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">PIN-protected access</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Add an extra security layer with a one-time PIN for sensitive
-                  documents. Control who can open, view, and interact with
-                  confidential project records.
-                </p>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+          </div>
 
           <div className="text-center space-y-3 pt-4">
             <p className="text-sm font-semibold text-primary">
@@ -444,6 +474,10 @@ const EarlyAccess = () => {
                       That gap matters when questions arise, positions harden, or evidence is tested. We’re
                       building beyond signing to make the record itself stronger.
                     </p>
+                    <p>
+                      That’s why we’re working with a small group of design partners to design the next phase:
+                      disputed, multi-party project records and chain-of-custody.
+                    </p>
                   </div>
 
                   <div className="relative mt-7 max-w-md rounded-2xl border border-border/90 bg-background/75 px-5 py-4 shadow-[0_1px_0_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.7)]">
@@ -454,10 +488,10 @@ const EarlyAccess = () => {
                             <ArrowRight className="h-4 w-4" />
                           </span>
                         </span>
-                        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/60">
+                        <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/60">
                           Key shift
                         </span>
-                        <span className="block mt-1">
+                        <span className="block mt-1.5 text-foreground/85">
                           Signing is the start. The record is the real infrastructure.
                         </span>
                       </p>
@@ -491,11 +525,14 @@ const EarlyAccess = () => {
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6 leading-[1.12]">
                 Disputes start as documentation problems.
               </h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed max-w-xl">
+              <div className="space-y-5 text-muted-foreground leading-relaxed max-w-xl">
                 <p>
                   By the time a dispute becomes visible, the record is usually already fragmented.
                   Different parties are working from different contracts, different notice trails,
                   different approval histories, and different supporting documents.
+                </p>
+                <p className="text-foreground/90 font-medium">
+                  Fragmentation is the default — until it becomes a dispute problem.
                 </p>
                 <p>
                   What should be one provable project record becomes a scattered set of files across
@@ -522,7 +559,7 @@ const EarlyAccess = () => {
               />
 
               <div className="relative rounded-2xl p-5 md:p-6">
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {/* Dominant card (now stacked above the supporting cards) */}
                   <div className="rounded-2xl border border-border bg-card/80 backdrop-blur-sm p-6 shadow-sm">
                     <div className="flex items-start justify-between gap-6">
@@ -557,7 +594,11 @@ const EarlyAccess = () => {
                   </div>
 
                   {/* Supporting cards (stacked underneath) */}
-                  <div className="grid sm:grid-cols-3 gap-4">
+                  <div className="pt-1">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-3">
+                      Where the record breaks
+                    </p>
+                    <div className="grid sm:grid-cols-3 gap-4">
                     <div className="rounded-xl border border-border bg-card/70 p-5 shadow-[0_1px_0_rgba(15,23,42,0.04)]">
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-primary/10 text-primary">
                         <FileText className="h-4 w-4" />
@@ -593,6 +634,7 @@ const EarlyAccess = () => {
                         A late notice can decide entitlement — even when work was real.
                       </p>
                     </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -610,7 +652,7 @@ const EarlyAccess = () => {
           {/* Label */}
           <div className="flex justify-center mb-10">
             <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-white bg-primary/30 border border-primary/40 px-4 py-1.5 rounded-full">
-              <Clock className="h-3 w-3" /> In pilot development
+              <Clock className="h-3 w-3" /> In design-partner development
             </span>
           </div>
 
@@ -625,6 +667,7 @@ const EarlyAccess = () => {
               </h2>
               <p className="text-lg text-white/70 leading-relaxed">
                 A shared, provable record of who issued, signed, received, challenged, or controlled a document over time.
+                This is the chain-of-custody model we’re designing with early design partners.
               </p>
             </div>
           </Reveal>
@@ -719,7 +762,7 @@ const EarlyAccess = () => {
                   <Link to="/">Explore the prototype</Link>
                 </Button>
                 <Button size="lg" onClick={scrollToSignup} className="bg-primary text-white hover:bg-primary/80 text-base px-8">
-                  Apply to join the pilot <ArrowRight className="ml-2 h-4 w-4" />
+                  Become a design partner <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -749,9 +792,8 @@ const EarlyAccess = () => {
                 <h3 className="text-xl font-bold mb-3 text-white">Dispute Mode</h3>
                 <p className="text-white/70 leading-relaxed mb-4">
                   Surface contested documents, preserve history, and keep evidence
-                  intact. When a payment application or variation is disputed, the
-                  entire chain of custody is frozen and protected — ready for
-                  adjudication, not just filing.
+                  intact. These workflows are being built so that when a payment application or variation is disputed,
+                  the entire chain of custody can be frozen and protected — ready for adjudication, not just filing.
                 </p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-4 hover:border-red-500/20 transition-colors duration-300">
@@ -788,15 +830,15 @@ const EarlyAccess = () => {
             <div id="signup" className="max-w-2xl mx-auto scroll-mt-24 md:scroll-mt-28">
               <div className="text-center mb-10">
                 <p className="text-xs font-semibold uppercase tracking-wider mb-3 text-[rgb(40,175,96)]">
-                  Pilot application
+                  Design partner application
                 </p>
                 <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-3">
-                  Apply to join the pilot programme
+                  Apply to become a design partner
                 </h2>
                 <p className="text-white/60 text-sm leading-relaxed">
-                  We’re onboarding a small number of teams to shape dispute-focused features like
-                  chain of custody and evidence export. We review each application personally and
-                  onboard teams that are a strong fit for the current pilot.
+                  We’re onboarding a small number of teams as design partners to help us shape and test dispute-focused
+                  features like chain of custody and evidence export. This is an early design-partner phase, not general
+                  product access.
                 </p>
               </div>
 
@@ -821,7 +863,7 @@ const EarlyAccess = () => {
                   <h3 className="text-sm font-semibold text-white mb-3">What you’ll get</h3>
                   <ul className="space-y-2">
                     {[
-                      "Early access to pilot workflows and prototype updates.",
+                      "Early access to design-partner workflows and prototype updates.",
                       "A clearer, provable record across parties for contentious documents.",
                       "A direct feedback loop with the team building the product.",
                     ].map((t) => (
@@ -917,8 +959,11 @@ const EarlyAccess = () => {
                     />
                   </div>
                   <Button type="submit" className="w-full bg-primary text-white hover:bg-primary/80" size="lg">
-                    Join the pilot programme
+                    Become a design partner
                   </Button>
+                  <p className="text-xs text-white/50 text-center">
+                    You’ll work closely with our team while we design and build the next phase of Teranode Sign.
+                  </p>
                 </form>
               )}
             </div>
