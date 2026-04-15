@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -81,6 +81,7 @@ const CONTAINER = {
 } as const;
 
 const EarlyAccess = () => {
+  const location = useLocation();
   const [submitted, setSubmitted] = useState(false);
   const [heroCtasInView, setHeroCtasInView] = useState(true);
   const heroCtasRef = useRef<HTMLDivElement>(null);
@@ -92,6 +93,18 @@ const EarlyAccess = () => {
     pain: "",
     email: "",
   });
+
+  useLayoutEffect(() => {
+    const id = location.hash.replace(/^#/, "");
+    if (id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "auto", block: "start" });
+        return;
+      }
+    }
+    window.scrollTo(0, 0);
+  }, [location.pathname, location.hash, location.key]);
 
   useEffect(() => {
     const el = heroCtasRef.current;
