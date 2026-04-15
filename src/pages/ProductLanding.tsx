@@ -102,7 +102,7 @@ const ProductLanding = () => {
             </Button>
             <Button size="sm" className={`min-h-10 touch-manipulation px-3 sm:px-4 ${trialButtonClass}`} asChild>
               <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer">
-                Start free trial
+                Start for free
               </a>
             </Button>
           </div>
@@ -131,7 +131,7 @@ const ProductLanding = () => {
                 asChild
               >
                 <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer">
-                  Start free trial
+                  Start for free
                 </a>
               </Button>
             </div>
@@ -579,7 +579,7 @@ const ProductLanding = () => {
                 asChild
               >
                 <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer">
-                  Start free trial
+                  Start for free
                 </a>
               </Button>
               <p className="mt-7 border-t border-border/45 pt-6 text-sm leading-relaxed text-muted-foreground sm:mt-8 sm:pt-7">
