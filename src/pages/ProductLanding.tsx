@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { CTA_A11Y } from "@/lib/ctaA11y";
 import {
   Accordion,
   AccordionContent,
@@ -96,13 +97,23 @@ const ProductLanding = () => {
               className="min-h-10 min-w-[2.75rem] touch-manipulation text-primary hover:bg-transparent hover:text-primary border border-transparent hover:border-primary px-2.5 sm:px-3"
               asChild
             >
-              <a href={LOGIN_URL} target="_blank" rel="noopener noreferrer">
-                Login
+              <a
+                href={LOGIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Login. Opens in a new tab."
+              >
+                <span aria-hidden>Login</span>
               </a>
             </Button>
             <Button size="sm" className={`min-h-10 touch-manipulation px-3 sm:px-4 ${trialButtonClass}`} asChild>
-              <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer">
-                Start for free
+              <a
+                href={SIGNUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={CTA_A11Y.startFreeNewTab}
+              >
+                <span aria-hidden>Start for free</span>
               </a>
             </Button>
           </div>
@@ -130,8 +141,13 @@ const ProductLanding = () => {
                 className={`h-12 min-h-12 w-full touch-manipulation px-8 text-base shadow-md sm:w-auto sm:min-w-[12rem] ${trialButtonClass}`}
                 asChild
               >
-                <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer">
-                  Start for free
+                <a
+                  href={SIGNUP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={CTA_A11Y.startFreeNewTab}
+                >
+                  <span aria-hidden>Start for free</span>
                 </a>
               </Button>
             </div>
@@ -549,9 +565,15 @@ const ProductLanding = () => {
               asChild
               className="h-auto min-h-12 w-full max-w-sm touch-manipulation bg-primary px-4 py-3 text-sm leading-snug text-primary-foreground shadow-sm hover:bg-primary/90 sm:mx-auto"
             >
-              <Link to="/early-access" className="inline-flex items-center justify-center gap-2">
-                Learn about the design-partner programme
-                <ArrowRight className="h-4 w-4 shrink-0 opacity-95" aria-hidden />
+              <Link
+                to="/early-access"
+                aria-label={CTA_A11Y.designPartnerProgramme}
+                className="inline-flex items-center justify-center gap-2"
+              >
+                <span aria-hidden className="inline-flex items-center gap-2">
+                  Learn about the design-partner programme
+                  <ArrowRight className="h-4 w-4 shrink-0 opacity-95" aria-hidden />
+                </span>
               </Link>
             </Button>
           </Reveal>
@@ -578,8 +600,13 @@ const ProductLanding = () => {
                 className={`h-12 min-h-12 w-full touch-manipulation px-8 text-base shadow-md sm:w-auto sm:min-w-[13rem] sm:px-12 ${trialButtonClass}`}
                 asChild
               >
-                <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer">
-                  Start for free
+                <a
+                  href={SIGNUP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={CTA_A11Y.startFreeNewTab}
+                >
+                  <span aria-hidden>Start for free</span>
                 </a>
               </Button>
               <p className="mt-7 border-t border-border/45 pt-6 text-sm leading-relaxed text-muted-foreground sm:mt-8 sm:pt-7">

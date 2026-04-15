@@ -34,6 +34,7 @@ import { LandingMultipartyAnimatedSvg } from "@/components/LandingMultipartyAnim
 import { LandingDisputeModeAnimatedSvg } from "@/components/LandingDisputeModeAnimatedSvg";
 import landingEvidenceExport from "@/assets/landing-evidence-export.svg";
 import { PDCC2AnimatedSvg } from "@/components/PDCC2AnimatedSvg";
+import { CTA_A11Y } from "@/lib/ctaA11y";
 
 /* ── Scroll-reveal hook ── */
 function useReveal() {
@@ -147,13 +148,24 @@ const EarlyAccess = () => {
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
             <Button variant="outline" size="sm" asChild>
-              <a href={SIGNUP_URL} target="_blank" rel="noopener noreferrer">
-                Start for free
+              <a
+                href={SIGNUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={CTA_A11Y.startFreeNewTab}
+              >
+                <span aria-hidden>Start for free</span>
               </a>
             </Button>
             {!heroCtasInView && (
-              <Button size="sm" onClick={scrollToSignup}>
-                Become a design partner
+              <Button
+                type="button"
+                size="sm"
+                onClick={scrollToSignup}
+                aria-label={CTA_A11Y.navDesignPartner}
+                className="transition-colors hover:bg-white hover:text-slate-900"
+              >
+                <span aria-hidden>Become a design partner</span>
               </Button>
             )}
           </div>
@@ -175,31 +187,47 @@ const EarlyAccess = () => {
             </h1>
             <p className="mb-8 text-lg leading-relaxed text-muted-foreground">
               Teranode Sign already helps teams create signed, independently verifiable records. We are inviting a small
-              number of design partners to help shape the next phase: chain of custody, evidence export, and
-              dispute-ready controls for contested documentation.
+              number of design partners to help shape the next phase: chain of custody, evidence export, and dispute-ready
+              controls for contested documentation.
             </p>
-            <div ref={heroCtasRef} className="mb-5 flex flex-col justify-center gap-3 sm:flex-row">
-              <Button size="lg" onClick={scrollToSignup} className="text-base px-8">
-                Apply to the programme <ArrowRight className="ml-2 h-4 w-4" />
+            <div
+              ref={heroCtasRef}
+              className="mb-5 flex w-full flex-col items-center justify-center gap-2.5 sm:flex-row sm:items-stretch sm:justify-center sm:gap-3"
+            >
+              <Button
+                type="button"
+                size="lg"
+                aria-label={CTA_A11Y.designPartnerStacked}
+                className="group inline-flex h-auto w-max min-w-[11.5rem] max-w-[min(100%,19rem)] shrink-0 gap-0 px-5 py-2 text-base shadow-sm transition-colors hover:bg-white hover:text-slate-900 sm:min-w-[12.5rem] sm:px-6 sm:py-2.5"
+                onClick={scrollToSignup}
+              >
+                <span aria-hidden className="flex flex-col items-center gap-px text-center sm:items-start sm:text-left">
+                  <span className="text-[15px] font-semibold leading-snug tracking-tight text-primary-foreground transition-colors group-hover:text-slate-900">
+                    Become a design partner
+                  </span>
+                  <span className="text-[10px] font-normal leading-snug tracking-wide text-primary-foreground/55 transition-colors group-hover:text-slate-500">
+                    Shape the next phase
+                  </span>
+                </span>
               </Button>
               <Button
-                size="lg"
                 variant="outline"
-                className="border-[rgb(40,175,96)] bg-[rgb(40,175,96)] text-white hover:bg-white hover:text-slate-900 text-base px-8"
+                size="lg"
+                className="group inline-flex h-auto w-max min-w-[11.5rem] max-w-[min(100%,19rem)] shrink-0 gap-0 border-border/70 bg-background/70 px-5 py-2 text-base shadow-sm backdrop-blur-sm transition-colors hover:border-[rgb(40,175,96)] hover:bg-[rgb(40,175,96)] hover:text-white sm:min-w-[12.5rem] sm:px-6 sm:py-2.5"
                 asChild
               >
-                <Link to="/">See demo</Link>
+                <Link to="/product" aria-label={CTA_A11Y.liveProductStacked}>
+                  <span aria-hidden className="flex flex-col items-center gap-px text-center sm:items-start sm:text-left">
+                    <span className="text-[15px] font-semibold leading-snug tracking-tight text-foreground transition-colors group-hover:text-white">
+                      See what&apos;s live today
+                    </span>
+                    <span className="text-[10px] font-normal leading-snug tracking-wide text-muted-foreground/75 transition-colors group-hover:text-white/85">
+                      Explore the live product
+                    </span>
+                  </span>
+                </Link>
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground">
-              <Link to="/product" className="font-medium text-primary underline-offset-4 hover:underline">
-                View the full product overview
-              </Link>
-              {" · "}
-              <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                Documentation
-              </a>
-            </p>
           </div>
 
           <Reveal>
@@ -289,6 +317,44 @@ const EarlyAccess = () => {
                       }}
                     />
                   </div>
+                </div>
+              </div>
+
+              <div className="relative border-t border-border/60 bg-muted/[0.35] px-7 py-6 md:px-12 md:py-7 dark:bg-muted/20">
+                <div className="mx-auto flex w-full flex-col items-center gap-3 sm:flex-row sm:items-stretch sm:justify-center sm:gap-4">
+                  <Button
+                    type="button"
+                    size="lg"
+                    aria-label={CTA_A11Y.designPartnerStacked}
+                    className="group inline-flex h-auto w-max min-w-[13.25rem] max-w-[min(100%,22rem)] shrink-0 gap-0 px-6 py-2.5 shadow-sm transition-colors hover:bg-white hover:text-slate-900 sm:min-w-[14rem] sm:px-7"
+                    onClick={scrollToSignup}
+                  >
+                    <span aria-hidden className="flex flex-col items-center gap-0.5 text-center sm:items-start sm:text-left">
+                      <span className="text-[15px] font-semibold leading-snug text-primary-foreground transition-colors group-hover:text-slate-900">
+                        Become a design partner
+                      </span>
+                      <span className="text-[11px] font-medium leading-snug text-primary-foreground/75 transition-colors group-hover:text-slate-600">
+                        Shape the next phase
+                      </span>
+                    </span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="group inline-flex h-auto w-max min-w-[13.25rem] max-w-[min(100%,22rem)] shrink-0 gap-0 border-border/80 bg-background/80 px-6 py-2.5 shadow-sm backdrop-blur-sm transition-colors hover:border-[rgb(40,175,96)] hover:bg-[rgb(40,175,96)] hover:text-white sm:min-w-[14rem] sm:px-7 dark:bg-background/40"
+                    asChild
+                  >
+                    <Link to="/product" aria-label={CTA_A11Y.liveProductStacked}>
+                      <span aria-hidden className="flex flex-col items-center gap-0.5 text-center sm:items-start sm:text-left">
+                        <span className="text-[15px] font-semibold leading-snug text-foreground transition-colors group-hover:text-white">
+                          See what&apos;s live today
+                        </span>
+                        <span className="text-[11px] font-medium leading-snug text-muted-foreground transition-colors group-hover:text-white/90">
+                          Explore the live product
+                        </span>
+                      </span>
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -615,17 +681,43 @@ const EarlyAccess = () => {
 
           <Reveal>
             <div className="mb-20 flex justify-center">
-              <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <div className="mx-auto flex w-full flex-col items-center gap-3 sm:flex-row sm:items-stretch sm:justify-center sm:gap-4">
                 <Button
-                  asChild
+                  type="button"
                   size="lg"
-                  variant="outline"
-                  className="border-white/20 bg-white/10 px-8 text-base text-white hover:bg-white/15"
+                  aria-label={CTA_A11Y.designPartnerStacked}
+                  onClick={scrollToSignup}
+                  className="group inline-flex h-auto w-max min-w-[13.25rem] max-w-[min(100%,22rem)] shrink-0 gap-0 bg-primary px-6 py-2.5 shadow-sm transition-colors hover:bg-white hover:text-slate-900 sm:min-w-[14rem] sm:px-7"
                 >
-                  <Link to="/">See Demo</Link>
+                  <span aria-hidden className="flex flex-col items-center gap-0.5 text-center sm:items-start sm:text-left">
+                    <span className="text-[15px] font-semibold leading-snug text-primary-foreground transition-colors group-hover:text-slate-900">
+                      Become a design partner
+                    </span>
+                    <span className="text-[11px] font-medium leading-snug text-primary-foreground/75 transition-colors group-hover:text-slate-600">
+                      Shape the next phase
+                    </span>
+                  </span>
                 </Button>
-                <Button size="lg" onClick={scrollToSignup} className="bg-primary px-8 text-base text-white hover:bg-primary/80">
-                  Apply to the programme <ArrowRight className="ml-2 h-4 w-4" />
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="group inline-flex h-auto w-max min-w-[13.25rem] max-w-[min(100%,22rem)] shrink-0 gap-0 border-white/20 bg-white/10 px-6 py-2.5 text-white shadow-sm backdrop-blur-sm transition-colors hover:border-[rgb(40,175,96)] hover:bg-[rgb(40,175,96)] hover:text-white sm:min-w-[14rem] sm:px-7"
+                  asChild
+                >
+                  <Link
+                    to="/"
+                    aria-label={CTA_A11Y.prototypeStacked}
+                    className="inline-flex items-center justify-center"
+                  >
+                    <span aria-hidden className="flex flex-col items-center gap-0.5 text-center sm:items-start sm:text-left">
+                      <span className="text-[15px] font-semibold leading-snug text-white transition-colors group-hover:text-white">
+                        Project Chain of custody
+                      </span>
+                      <span className="text-[11px] font-medium leading-snug text-white/75 transition-colors group-hover:text-white/90">
+                        See Prototype
+                      </span>
+                    </span>
+                  </Link>
                 </Button>
               </div>
             </div>
